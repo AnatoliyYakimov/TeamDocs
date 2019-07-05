@@ -24,7 +24,7 @@ public class DocumentRestController {
 
 	@GetMapping("/{id}")
 	public Document getDocumentById(@PathVariable Long id) {
-		var document = documentRepository.findById(id);
+		var document = documentRepository.findLastUpdatedVersionOfDocumentWithId(id);
 		return document.get();
 	}
 
@@ -37,9 +37,10 @@ public class DocumentRestController {
 	}
 
 	@PutMapping("/{id}")
-	public void updateDocument(Document document, @PathVariable Long id) {
+	public Document updateDocument(@RequestBody Document document, @PathVariable Long id) {
 		document.setOriginalDocumentId(id);
 		document.setId(null);
-		documentRepository.save(document);
+		log.debug(document.toString());
+		return documentRepository.save(document);
 	}
 }
