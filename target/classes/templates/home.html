@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<title>TeamDocs</title>
+</head>
+
+<body>
+	<a id="context-path"
+           style="display:none"
+           th:href="@{/}">
+        </a>
+	<h1>Welcome to the TeamDocs!</h1>
+	<link rel="stylesheet" th:href="@{stylesheets/editormd.css}" />
+	<div id="test-editor">
+		<textarea style="display:none;" id="text-editor">### Editor.md
+	**Editor.md**: The open source embeddable online markdown editor, based on CodeMirror & jQuery & Marked.
+    </textarea>
+	</div>
+	<label>Name of document:</label>
+	<input id="document-name" type="text"></input>
+	<button id="save" onclick="save();">Save</button>
+	<input id="document-id" type="text">
+	<button id="load" onclick="load();">Load</button>
+	<button id="new" onclick="newDocument();">New</button>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script th:src="@{javascript/editormd.min.js}"></script>
+	<script th:src="@{javascript/lib/codemirror/codemirror.min.js}"></script>
+	<script th:src="@{javascript/main.js}"></script>
+</body>
+
+</html>
