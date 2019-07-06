@@ -26,9 +26,10 @@ hs_err_pid*
 HELP.md
 
 target/
+target/*
 
-?vscode/
+\.*/
 
-?settings/
+mvnw
 
-?mvn/
+mvnw.cmd
