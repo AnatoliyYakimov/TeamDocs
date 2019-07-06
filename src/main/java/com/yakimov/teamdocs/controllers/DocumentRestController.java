@@ -1,6 +1,10 @@
 package com.yakimov.teamdocs.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.yakimov.teamdocs.entities.Document;
 import com.yakimov.teamdocs.exceptions.DocumentNotFoundException;
-import com.yakimov.teamdocs.repositories.DocumentRepository;
 import com.yakimov.teamdocs.services.DocumentService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +26,9 @@ public class DocumentRestController {
 
 	@Autowired
 	private DocumentService documentService;
-
+	
+	
+	
 	@GetMapping("/{id}")
 	public Document getDocumentById(@PathVariable Long id) {
 		Document document = null;
@@ -36,7 +41,7 @@ public class DocumentRestController {
 		return document;
 	}
 	
-	@GetMapping("/last/{identifier}")
+	@GetMapping("/last/{hash}")
 	public Document getLastVarsionOfDocumentWithHash(@PathVariable String hash) {
 		Document document = null;
 		try {
@@ -56,6 +61,6 @@ public class DocumentRestController {
 
 	@PutMapping("/")
 	public Document updateDocument(@RequestBody Document document, @PathVariable String hash) {
-		return documentService.updateDocument(document);
+		return documentService.saveDocument(document);
 	}
 }

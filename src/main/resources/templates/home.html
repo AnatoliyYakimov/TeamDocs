@@ -3,6 +3,9 @@
 
 <head>
 	<title>TeamDocs</title>
+	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+	<script th:src="@{javascript/stomp.js}"></script>
+	
 </head>
 
 <body>
@@ -19,10 +22,10 @@
 	</div>
 	<label>Name of document:</label>
 	<input id="document-name" type="text"></input>
-	<button id="save" onclick="save();">Save</button>
+	<button id="save" onclick="controller.save();">Save</button>
 	<input id="document-id" type="text">
-	<button id="load" onclick="load();">Load</button>
-	<button id="new" onclick="newDocument();">New</button>
+	<button id="load" onclick="controller.load();">Load</button>
+	<button id="new" onclick="controller.newDocument();">New</button>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script th:src="@{javascript/editormd.min.js}"></script>
 	<script th:src="@{javascript/lib/codemirror/codemirror.min.js}"></script>

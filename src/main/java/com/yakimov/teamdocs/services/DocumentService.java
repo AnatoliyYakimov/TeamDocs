@@ -3,25 +3,31 @@ package com.yakimov.teamdocs.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.core.MessageSendingOperations;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.yakimov.teamdocs.entities.Document;
 import com.yakimov.teamdocs.exceptions.DocumentNotFoundException;
 import com.yakimov.teamdocs.repositories.DocumentRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class DocumentService {
 	@Autowired
 	private DocumentRepository documentRepository;
 	
+	@Autowired
+	private MessageSendingOperations<String> messageSender;
+	
 	public Document saveDocument(Document document) {
 		document.setId(null);
-		return document = documentRepository.save(document);
-	}
-	
-	public Document updateDocument(Document document) {
-		document.setId(null);
-		return documentRepository.save(document);
+		document = documentRepository.save(document);
+		String destination = "/topic/document." + document.getHash();
+		messageSender.convertAndSend(destination, document);
+		return document;
 	}
 	
 	public Document getDocumentById(Long id) throws DocumentNotFoundException {
