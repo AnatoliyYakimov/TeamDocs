@@ -1,10 +1,6 @@
 package com.yakimov.teamdocs.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +22,7 @@ public class DocumentRestController {
 
 	@Autowired
 	private DocumentService documentService;
-	
+	ы
 	
 	
 	@GetMapping("/{id}")
