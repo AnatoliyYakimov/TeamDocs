@@ -6,14 +6,14 @@ updateEditor();
 function updateEditor(text = "Enter text here") {
 	//editor ? editor.editor.remove() : 0;
 	editor = editormd("test-editor", {
-		width  : "90%",
-		height : "300px",
+		width: "90%",
+		height: "300px",
 		markdown: text,
 		path: "javascript/lib/"
 	});
 }
 
-function newDocument(){
+function newDocument() {
 	updateEditor();
 	document.querySelector('#document-name').value = "New Document";
 	currentDocument = null;
@@ -27,18 +27,13 @@ function save() {
 			name: name,
 			text: text
 		}
-		postDocument(doc).then(function (result) {
-			currentDocument = result;
-			console.log(currentDocument);
-		});
+		currentDocument = doc;
 	}
-	else {
-		currentDocument.name = name;
-		currentDocument.text = text;
-		console.log("Current doc:");
+	postDocument(currentDocument).then(function (result) {
+		currentDocument = result;
 		console.log(currentDocument);
-		putDocument(currentDocument);
-	}
+	});
+
 }
 
 
@@ -51,7 +46,7 @@ function load() {
 	});
 }
 
-function putDocument(doc = {}){
+function putDocument(doc = {}) {
 	var headers = new Headers();
 	headers.append("content-type", "application/json");
 	headers.append("connection", "keep-alive");
@@ -62,7 +57,7 @@ function putDocument(doc = {}){
 		body: JSON.stringify(doc)
 	}
 
-	return fetch("documents/" + doc.id, init)
+	return fetch("documents/", init)
 		.then(
 			function (response) {
 				return response.json();

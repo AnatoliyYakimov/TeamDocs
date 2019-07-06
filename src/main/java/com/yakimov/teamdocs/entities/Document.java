@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
 
 import org.springframework.util.DigestUtils;
@@ -22,7 +23,7 @@ public class Document {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private String identifier;
+	private String hash;
 
 	private String name;
 	private Date createdAt;
@@ -35,9 +36,15 @@ public class Document {
 		updatedAt = new Date();
 		if (createdAt == null) {
 			createdAt = updatedAt;
-			String hash = Long.toHexString(createdAt.getTime());
-			identifier = DigestUtils.md5DigestAsHex(hash.getBytes());
+			String key = Long.toHexString(createdAt.getTime());
+			hash = DigestUtils.md5DigestAsHex(key.getBytes());
 		}
+	}
+	
+	@PreUpdate
+	public void updateDate() {
+		updatedAt = new Date();
+		id = null;
 	}
 	
 

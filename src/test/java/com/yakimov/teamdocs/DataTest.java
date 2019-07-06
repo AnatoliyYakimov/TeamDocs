@@ -53,17 +53,18 @@ public class DataTest {
 	
 	@Test
 	public void testFindLastUpdated() {
-		Document doc = new Document("Doc", "Empty");
+		Document doc = new Document("Doc", "SomeText");
 		doc = documentRepository.save(doc);
-		var docs = documentRepository.findAll();
-		for (Document document : docs) {
-			document.setOriginalDocumentId(document.getId());
-		}
-		var founded = documentRepository.findLastUpdatedVersionOfDocumentWithId(doc.getId());
-		
+		log.debug("Doc1  " + doc.toString());
+		Document doc2 = new Document("NewDoc", "SomeText");
+		doc2.setHash(doc.getHash());
+		doc2 = documentRepository.save(doc2);
+		log.debug("Doc2  " + doc2.toString());
+		var founded = documentRepository.findLastVersionOfDocumentWith(doc2.getHash());
+		log.debug(founded.get().toString());
 		assertNotNull(founded);
 		assertTrue(founded.isPresent());
-		assertTrue(founded.get().getName().equals("Doc"));
+		assertTrue(founded.get().getName().equals("NewDoc"));
 		log.debug("Founded: " + founded.get().toString());
 	}
 	

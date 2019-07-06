@@ -15,6 +15,7 @@ public class DocumentService {
 	private DocumentRepository documentRepository;
 	
 	public Document saveDocument(Document document) {
+		document.setId(null);
 		return document = documentRepository.save(document);
 	}
 	
@@ -27,8 +28,8 @@ public class DocumentService {
 		Optional<Document> document = documentRepository.findById(id);
 		return document.orElseThrow(() -> new DocumentNotFoundException());
 	}
-	Document getLastVersionOfDocumentWith(String identifier) throws DocumentNotFoundException {
-		Optional<Document> document = documentRepository.findLastVersionOfDocumentWith(identifier);
+	public Document getLastVersionOfDocumentWith(String hash) throws DocumentNotFoundException {
+		Optional<Document> document = documentRepository.findLastVersionOfDocumentWith(hash);
 		return document.orElseThrow(() -> new DocumentNotFoundException());
 	}
 }

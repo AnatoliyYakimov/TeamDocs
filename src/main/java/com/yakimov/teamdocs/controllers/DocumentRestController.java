@@ -35,6 +35,18 @@ public class DocumentRestController {
 		}
 		return document;
 	}
+	
+	@GetMapping("/last/{identifier}")
+	public Document getLastVarsionOfDocumentWithHash(@PathVariable String hash) {
+		Document document = null;
+		try {
+			document = documentService.getLastVersionOfDocumentWith(hash);
+		} catch (DocumentNotFoundException e) {
+			// TODO Auto-generated catch block
+			log.debug(e.getMessage());
+		}
+		return document;
+	}
 
 	@PostMapping("/")
 	public Document saveDocument(@RequestBody Document document) {
@@ -42,8 +54,8 @@ public class DocumentRestController {
 		return documentService.saveDocument(document);
 	}
 
-	@PutMapping("/{id}")
-	public Document updateDocument(@RequestBody Document document, @PathVariable Long id) {
+	@PutMapping("/")
+	public Document updateDocument(@RequestBody Document document, @PathVariable String hash) {
 		return documentService.updateDocument(document);
 	}
 }
