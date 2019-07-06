@@ -25,10 +25,10 @@ hs_err_pid*
 *.project
 HELP.md
 
-target
+target/
 
-.vscode
+.vscode/
 
-.settings
+.settings/
 
-.maven
+.maven/
