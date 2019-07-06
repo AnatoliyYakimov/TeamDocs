@@ -27,8 +27,8 @@ HELP.md
 
 target/
 
-.vscode/
+\.vscode/
 
-.settings/
+\.settings/
 
-.maven/
+\.mvn/
