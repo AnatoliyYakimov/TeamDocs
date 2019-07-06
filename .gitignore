@@ -24,3 +24,11 @@ hs_err_pid*
 
 *.project
 HELP.md
+
+target
+
+.vscode
+
+.settings
+
+.maven

@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yakimov.teamdocs.entities.Document;
+import com.yakimov.teamdocs.exceptions.DocumentNotFoundException;
 import com.yakimov.teamdocs.repositories.DocumentRepository;
+import com.yakimov.teamdocs.services.DocumentService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,27 +22,28 @@ import lombok.extern.slf4j.Slf4j;
 public class DocumentRestController {
 
 	@Autowired
-	private DocumentRepository documentRepository;
+	private DocumentService documentService;
 
 	@GetMapping("/{id}")
 	public Document getDocumentById(@PathVariable Long id) {
-		var document = documentRepository.findLastUpdatedVersionOfDocumentWithId(id);
-		return document.get();
+		Document document = null;
+		try {
+			document = documentService.getDocumentById(id);
+		} catch (DocumentNotFoundException e) {
+			// TODO Auto-generated catch block
+			log.debug(e.getMessage());
+		}
+		return document;
 	}
 
 	@PostMapping("/")
 	public Document saveDocument(@RequestBody Document document) {
 		log.debug("Got request POST: " + document.toString());
-		document = documentRepository.save(document);
-		document.setOriginalDocumentId(document.getId());
-		return documentRepository.save(document);
+		return documentService.saveDocument(document);
 	}
 
 	@PutMapping("/{id}")
 	public Document updateDocument(@RequestBody Document document, @PathVariable Long id) {
-		document.setOriginalDocumentId(id);
-		document.setId(null);
-		log.debug(document.toString());
-		return documentRepository.save(document);
+		return documentService.updateDocument(document);
 	}
 }
