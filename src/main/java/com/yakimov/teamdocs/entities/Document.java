@@ -8,7 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-import javax.persistence.SequenceGenerator;
 
 import org.springframework.util.DigestUtils;
 
@@ -19,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
-public class Document {
+public class Document{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;

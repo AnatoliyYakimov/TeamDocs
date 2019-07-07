@@ -1,7 +1,10 @@
 package com.yakimov.teamdocs.repositories;
 
+import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -13,6 +16,8 @@ public interface DocumentRepository extends CrudRepository<Document, Long>{
 	
 	@Query(value = "select * from document where hash = ? order by updated_At asc", nativeQuery = true)
 	public Iterable<Document> findChangeHistoryOfDocumentSortAscending(Long id);
+	
+	public Page<Document> findAllByHash(String hash, Pageable page);
 	
 	@Query(value = "select * from document where hash = ? order by updated_At desc", nativeQuery = true)
 	public Iterable<Document> findChangeHistoryOfDocumentSortDescending(Long id);

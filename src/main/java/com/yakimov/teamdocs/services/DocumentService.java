@@ -3,8 +3,9 @@ package com.yakimov.teamdocs.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.core.MessageSendingOperations;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.yakimov.teamdocs.entities.Document;
@@ -37,5 +38,9 @@ public class DocumentService {
 	public Document getLastVersionOfDocumentWith(String hash) throws DocumentNotFoundException {
 		Optional<Document> document = documentRepository.findLastVersionOfDocumentWith(hash);
 		return document.orElseThrow(() -> new DocumentNotFoundException());
+	}
+	
+	public Page<Document> getDocumentHistory(String hash, Pageable page){
+		return documentRepository.findAllByHash(hash, page);
 	}
 }
