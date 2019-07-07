@@ -12,9 +12,6 @@ import com.yakimov.teamdocs.entities.Document;
 import com.yakimov.teamdocs.exceptions.DocumentNotFoundException;
 import com.yakimov.teamdocs.repositories.DocumentRepository;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Service
 public class DocumentService {
 	@Autowired
