@@ -2,6 +2,8 @@ package com.yakimov.teamdocs;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
 public class TeamDocsApplication {
@@ -9,5 +11,5 @@ public class TeamDocsApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TeamDocsApplication.class, args);
 	}
-
+	
 }
