@@ -46,8 +46,7 @@ public class DocumentRestController {
 	@GetMapping("/history/{hash}")
 	public HttpEntity<?> getHistoryOfDocumentByHash(@PathVariable String hash, Pageable page){
 		Page<Document> documents = documentService.getDocumentHistory(hash, page);
-		var resp = ResponseEntity.ok(documentAssembler.toPagedModel(documents));
-		return resp;
+		return ResponseEntity.ok(documentAssembler.toPagedModel(documents));
 	}
 	
 	@PostMapping("/")
