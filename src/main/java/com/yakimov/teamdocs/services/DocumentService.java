@@ -30,11 +30,11 @@ public class DocumentService {
 	
 	public Document getDocumentById(Long id) throws DocumentNotFoundException {
 		Optional<Document> document = documentRepository.findById(id);
-		return document.orElseThrow(() -> new DocumentNotFoundException());
+		return document.orElseThrow(() -> new DocumentNotFoundException(id));
 	}
 	public Document getLastVersionOfDocumentWith(String hash) throws DocumentNotFoundException {
 		Optional<Document> document = documentRepository.findLastVersionOfDocumentWith(hash);
-		return document.orElseThrow(() -> new DocumentNotFoundException());
+		return document.orElseThrow(() -> new DocumentNotFoundException(hash));
 	}
 	
 	public Page<Document> getDocumentHistory(String hash, Pageable page){

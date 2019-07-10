@@ -24,6 +24,7 @@ hs_err_pid*
 *.project
 HELP.md
 target/classes/
+target/
 target/**
 \.*/
 mvnw
