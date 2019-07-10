@@ -38,15 +38,17 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable().authorizeRequests()
-			.antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
+			.antMatchers("/", "/javascript/**", "/stylesheets/**", "/fonts/**", "/favicon.ico").permitAll()
+			.antMatchers(HttpMethod.POST, SIGN_UP_URL, "/login").permitAll()
 			.anyRequest().authenticated()
 			.and()
 			.addFilter(new AuthenticationFilter(authenticationManager()))
 			.addFilter(new JWTAuthorizationFilter(authenticationManager()))
 			//Disable session creation
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+			
 	}
-	
+
 	@Bean
 	CorsConfigurationSource corsConfigurationSource(){
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

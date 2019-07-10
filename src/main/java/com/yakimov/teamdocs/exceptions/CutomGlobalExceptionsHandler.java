@@ -1,4 +1,4 @@
-package com.yakimov.teamdocs.utils;
+package com.yakimov.teamdocs.exceptions;
 
 import static com.yakimov.teamdocs.utils.ExceptionHandlerUtil.generateBodyWithTimestampAndStatus;
 
@@ -31,5 +31,7 @@ public class CutomGlobalExceptionsHandler extends ResponseEntityExceptionHandler
 		
 		return new ResponseEntity<>(body, headers, status);
 	}
+	
+	
 	
 }

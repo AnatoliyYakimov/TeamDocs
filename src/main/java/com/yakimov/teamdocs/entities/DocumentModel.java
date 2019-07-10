@@ -19,12 +19,13 @@ import lombok.ToString;
 public class DocumentModel extends RepresentationModel<DocumentModel>{
 	
 	public DocumentModel(Document document) {
-		super();
 		this.hash = document.getHash();
 		this.createdAt = document.getCreatedAt();
 		this.updatedAt = document.getUpdatedAt();
 		this.name = document.getName();
 		this.text = document.getText();
+		this.author = document.getAuthor();
+		this.modifiedBy = document.getModifiedBy();
 	}
 	private String hash;
 	
@@ -33,5 +34,8 @@ public class DocumentModel extends RepresentationModel<DocumentModel>{
 	
 	private String name;
 	private String text;
+	
+	private String author;
+	private String modifiedBy;
 	
 }

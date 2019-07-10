@@ -15,7 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -47,6 +49,9 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 			return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), new ArrayList<>()));
 		}catch(IOException e) {
 			throw new RuntimeException(e);
+		}catch(BadCredentialsException e){
+			response.setStatus(HttpStatus.NOT_FOUND.value());
+			return null;
 		}
 	}
 

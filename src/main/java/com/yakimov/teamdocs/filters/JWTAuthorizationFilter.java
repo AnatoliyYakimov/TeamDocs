@@ -22,6 +22,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
+	
 
 	public JWTAuthorizationFilter(AuthenticationManager authenticationManager) {
 		super(authenticationManager);

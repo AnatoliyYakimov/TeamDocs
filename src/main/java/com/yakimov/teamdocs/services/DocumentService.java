@@ -2,10 +2,10 @@ package com.yakimov.teamdocs.services;
 
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.core.MessageSendingOperations;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.yakimov.teamdocs.entities.Document;
@@ -14,14 +14,24 @@ import com.yakimov.teamdocs.repositories.DocumentRepository;
 
 @Service
 public class DocumentService {
-	@Autowired
 	private DocumentRepository documentRepository;
-	
-	@Autowired
+
 	private MessageSendingOperations<String> messageSender;
 	
+	public DocumentService(DocumentRepository documentRepository,
+			MessageSendingOperations<String> messageSender) {
+		this.documentRepository = documentRepository;
+		this.messageSender = messageSender;
+	}
+	
+	
 	public Document saveDocument(Document document) {
+		String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String hash = document.getHash();
 		document.setId(null);
+		document.setCreatedAt(documentRepository.getDocumentCreationTime(hash));
+		document.setAuthor(documentRepository.getAuthorOfDocument(hash));
+		document.setModifiedBy(username);
 		document = documentRepository.save(document);
 		String destination = "/topic/document." + document.getHash();
 		messageSender.convertAndSend(destination, document);

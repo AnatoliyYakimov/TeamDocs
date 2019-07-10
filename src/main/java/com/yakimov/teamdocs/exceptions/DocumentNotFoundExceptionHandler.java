@@ -1,4 +1,4 @@
-package com.yakimov.teamdocs.utils;
+package com.yakimov.teamdocs.exceptions;
 
 import static com.yakimov.teamdocs.utils.ExceptionHandlerUtil.generateBodyWithTimestampAndStatus;
 
@@ -9,8 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import com.yakimov.teamdocs.exceptions.DocumentNotFoundException;
 
 @ControllerAdvice
 public class DocumentNotFoundExceptionHandler {
