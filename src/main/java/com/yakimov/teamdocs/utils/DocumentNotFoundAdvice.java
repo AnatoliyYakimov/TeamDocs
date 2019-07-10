@@ -10,6 +10,7 @@ import com.yakimov.teamdocs.exceptions.DocumentNotFoundException;
 
 @ControllerAdvice
 public class DocumentNotFoundAdvice {
+	
 	@ResponseBody
 	@ResponseStatus(code = HttpStatus.NOT_FOUND)
 	@ExceptionHandler(DocumentNotFoundException.class)

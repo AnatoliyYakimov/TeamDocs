@@ -9,5 +9,5 @@ public class TeamDocsApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TeamDocsApplication.class, args);
 	}
-
+	
 }
