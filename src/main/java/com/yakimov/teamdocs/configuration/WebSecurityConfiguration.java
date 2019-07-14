@@ -2,8 +2,11 @@ package com.yakimov.teamdocs.configuration;
 
 import static com.yakimov.teamdocs.utils.SecurityConstraints.SIGN_UP_URL;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,6 +22,7 @@ import com.yakimov.teamdocs.filters.AuthenticationFilter;
 import com.yakimov.teamdocs.filters.JWTAuthorizationFilter;
 import com.yakimov.teamdocs.services.UserDetailsServiceImpl;
 
+@Configuration
 @EnableWebSecurity
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter{
 	@Qualifier(value = "userDetailsServiceImpl")
@@ -38,22 +42,29 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable().authorizeRequests()
-			.antMatchers("/", "/javascript/**", "/stylesheets/**", "/fonts/**", "/favicon.ico").permitAll()
+			.antMatchers("/**").permitAll()
+			.antMatchers("/socket", "/socket/**", "/", "/javascript/**", "/stylesheets/**").permitAll()
 			.antMatchers(HttpMethod.POST, SIGN_UP_URL, "/login").permitAll()
 			.anyRequest().authenticated()
 			.and()
 			.addFilter(new AuthenticationFilter(authenticationManager()))
 			.addFilter(new JWTAuthorizationFilter(authenticationManager()))
 			//Disable session creation
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
 			
 	}
 
 	@Bean
 	CorsConfigurationSource corsConfigurationSource(){
-		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
-		return source;
+		final CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("*"));
+        configuration.setAllowedMethods(List.of("HEAD",
+                "GET", "POST", "PUT", "DELETE", "PATCH"));
+        configuration.setAllowCredentials(true);
+        configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
 	}
 	
 }

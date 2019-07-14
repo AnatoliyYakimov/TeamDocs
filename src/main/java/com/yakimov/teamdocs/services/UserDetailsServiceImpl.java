@@ -2,6 +2,7 @@ package com.yakimov.teamdocs.services;
 
 import java.util.Collections;
 
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,7 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		if (user == null) {
 			throw new UsernameNotFoundException(username);
 		}
-		return new User(username, user.getPassword(), Collections.emptyList());
+		return new User(username, user.getPassword(), Collections.singleton((GrantedAuthority) () -> "USER"));
 	}
 
 }

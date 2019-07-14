@@ -32,6 +32,7 @@ public class DocumentRestController {
 	
 	@Autowired
 	private DocumentResourceAssembler documentAssembler;
+	
 
 	@GetMapping("/{id}")
 	public HttpEntity<DocumentModel> getDocumentById(@PathVariable Long id) throws DocumentNotFoundException {

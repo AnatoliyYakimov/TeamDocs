@@ -5,7 +5,7 @@ import static com.yakimov.teamdocs.utils.SecurityConstraints.SECRET;
 import static com.yakimov.teamdocs.utils.SecurityConstraints.TOKEN_PREFIX;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -49,7 +49,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 				.verify(token)
 				.getSubject();
 		if(user != null) {
-			return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<GrantedAuthority>());
+			return new UsernamePasswordAuthenticationToken(user, null, Collections.singleton((GrantedAuthority) () -> "USER"));
 		}else {
 			return null;
 		}

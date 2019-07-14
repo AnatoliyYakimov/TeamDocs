@@ -17,9 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -27,6 +27,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yakimov.teamdocs.entities.ApplicationUser;
+import com.yakimov.teamdocs.utils.ExceptionHandlerUtil;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	
@@ -49,10 +50,17 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 			return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), new ArrayList<>()));
 		}catch(IOException e) {
 			throw new RuntimeException(e);
-		}catch(BadCredentialsException e){
-			response.setStatus(HttpStatus.NOT_FOUND.value());
-			return null;
 		}
+	}
+
+	@Override
+	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+			AuthenticationException failed) throws IOException, ServletException {
+		var error = ExceptionHandlerUtil.generateBodyWithTimestampAndStatus(HttpStatus.NOT_FOUND);
+		error.put("message", failed.getMessage());
+		String json = new ObjectMapper().writeValueAsString(error);
+		response.setStatus(404);
+		response.getWriter().append(json).flush();
 	}
 
 	@Override
@@ -63,6 +71,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 				.withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
 				.sign(Algorithm.HMAC512(SECRET));
 		response.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
+		response.getWriter().format("{\"token\":\"%s\"}", TOKEN_PREFIX + token).flush();
 	}
 
 }
