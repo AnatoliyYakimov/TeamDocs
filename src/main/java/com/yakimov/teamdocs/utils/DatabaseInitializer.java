@@ -26,6 +26,9 @@ public class DatabaseInitializer {
 					new Document("Doc3", "Sometext"), new Document("Doc4", "Sometext"));
 			documentRepository.saveAll(docs);
 			userRepository.save(new ApplicationUser("admin", encoder.encode("admin")));
+			userRepository.save(new ApplicationUser("User1", encoder.encode("qwerty")));
+			userRepository.save(new ApplicationUser("User2", encoder.encode("qwerty")));
+			userRepository.save(new ApplicationUser("User3", encoder.encode("qwerty")));
 			log.debug("Database initialized");
 		};
 	};
