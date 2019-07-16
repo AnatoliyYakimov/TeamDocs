@@ -4,9 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.messaging.core.MessageSendingOperations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -31,12 +29,7 @@ public class DocumentService {
 		this.messageSender = messageSender;
 	}
 	
-	/*
-	 * @Scheduled(fixedDelay = 10000) public void test() {
-	 * log.debug("Scheduled test"); messageSender.convertAndSend("/topic/test", new
-	 * StompMessagePayload<String>(StompEvent.USER_SUB, "Payload")); }
-	 */
-	
+
 	public Document saveDocument(Document document) {
 		String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String hash = document.getHash();
