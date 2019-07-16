@@ -1,4 +1,4 @@
-package com.yakimov.teamdocs.controllers;
+package com.yakimov.teamdocs.events;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -24,10 +24,13 @@ public class WebsocketSubscribeEventListener implements ApplicationListener<Sess
 	@Override
 	public void onApplicationEvent(SessionSubscribeEvent event) {
 		var message = event.getMessage();
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
-		stompSubscriptionService.subscribeUser(username, accessor.getDestination());
-		log.debug(username + " subscribed to the channel");
+		var accessor = StompHeaderAccessor.wrap(message);
+		if(accessor.getDestination().matches("/topic/document.*")) {
+			String username = SecurityContextHolder.getContext().getAuthentication().getName();
+			stompSubscriptionService.subscribeUser(username, accessor.getDestination(), accessor.getSubscriptionId());
+			log.debug(username + " subscribed to the channel");
+		}
+		
 	}
 
 }
