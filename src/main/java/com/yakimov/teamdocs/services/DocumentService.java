@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.core.MessageSendingOperations;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -22,10 +23,10 @@ import lombok.extern.slf4j.Slf4j;
 public class DocumentService {
 	private DocumentRepository documentRepository;
 
-	private MessageSendingOperations<String> messageSender;
+	private SimpMessagingTemplate messageSender;
 	
 	public DocumentService(DocumentRepository documentRepository,
-			MessageSendingOperations<String> messageSender) {
+			SimpMessagingTemplate messageSender) {
 		this.documentRepository = documentRepository;
 		this.messageSender = messageSender;
 	}
@@ -45,7 +46,7 @@ public class DocumentService {
 		document.setModifiedBy(username);
 		document = documentRepository.save(document);
 		String destination = "/topic/document." + document.getHash();
-		messageSender.convertAndSend("/topic/test", document);
+		messageSender.convertAndSend(destination, new WsMessage<Document>(StompEvent.NEW_DOCUMENT, document) );
 		return document;
 	}
 	
