@@ -2,6 +2,7 @@ package com.yakimov.teamdocs.entities;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,6 +30,7 @@ public class Document{
 	@NotBlank(message = "Document`s name can`t be blank")
 	private String name;
 	@NotNull
+	@Column(name = "document_text", columnDefinition = "TEXT NOT NULL")
 	private String text;
 	
 	private Date createdAt;
