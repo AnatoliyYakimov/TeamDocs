@@ -23,8 +23,14 @@
 hs_err_pid*
 *.project
 HELP.md
+target/classes/**
 target/
+/target/
+/target/**
 target/**
 \.*/
+**/pom.properties
 mvnw
 mvnw.cmd
+
+\.gitignore

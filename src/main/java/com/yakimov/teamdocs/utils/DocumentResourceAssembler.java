@@ -3,6 +3,9 @@ package com.yakimov.teamdocs.utils;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.Link;
@@ -26,17 +29,11 @@ public class DocumentResourceAssembler extends RepresentationModelAssemblerSuppo
 	@Override
 	public DocumentModel toModel(Document document) {
 		DocumentModel resource = instantiateModel(document);
-		try {
-			Link history = linkTo(methodOn(DocumentRestController.class)
-					.getHistoryOfDocumentByHash(document.getHash(), Pageable.unpaged())).withRel("history");
-			Link self = linkTo(methodOn(DocumentRestController.class).getDocumentById(document.getId())).withRel("self");
-			Link last = linkTo(methodOn(DocumentRestController.class).getLastVarsionOfDocumentByHash(document.getHash())).withRel("last_version");
-			resource.add(self, last, history);
-		} catch (DocumentNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		Link history = historyLink(document.getHash());
+		Link last = lastVersionLink(document.getHash());
+		Link self = selfLink(document.getId());
+		resource.add(self, last, history);
+
 		return resource;
 	}
 
@@ -45,9 +42,46 @@ public class DocumentResourceAssembler extends RepresentationModelAssemblerSuppo
 		return new DocumentModel(entity);
 	}
 
-	public PagedModel<DocumentModel> toPagedModel(Page<Document> page){
-		PageMetadata metadata = new PageMetadata(page.getSize(), page.getNumber(), page.getTotalElements(), page.getTotalPages());
+	public PagedModel<DocumentModel> toPagedModel(Page<Document> page) {
+		PageMetadata metadata = new PageMetadata(page.getSize(), page.getNumber(), page.getTotalElements(),
+				page.getTotalPages());
 		PagedModel<DocumentModel> model = new PagedModel<>(toCollectionModel(page.getContent()).getContent(), metadata);
 		return model;
+	}
+	
+	
+
+	public List<DocumentModel> toListModel(Iterable<? extends Document> entities) {
+		var docs = new ArrayList<DocumentModel>();
+		entities.forEach((e) -> {
+			docs.add(toModel(e));
+		});
+		return docs;
+	}
+
+	private Link historyLink(String hash) {
+		return linkTo(methodOn(DocumentRestController.class).getHistoryOfDocumentByHash(hash, Pageable.unpaged()))
+				.withRel("history");
+	}
+
+	private Link lastVersionLink(String hash) {
+		try {
+			return linkTo(methodOn(DocumentRestController.class).getLastVarsionOfDocumentByHash(hash))
+					.withRel("last_version");
+		} catch (DocumentNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private Link selfLink(Long id) {
+		try {
+			return linkTo(methodOn(DocumentRestController.class).getDocumentById(id)).withRel("self");
+		} catch (DocumentNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

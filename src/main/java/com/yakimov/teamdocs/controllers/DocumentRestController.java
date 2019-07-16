@@ -1,5 +1,7 @@
 package com.yakimov.teamdocs.controllers;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +32,7 @@ public class DocumentRestController {
 	
 	@Autowired
 	private DocumentResourceAssembler documentAssembler;
+	
 
 	@GetMapping("/{id}")
 	public HttpEntity<DocumentModel> getDocumentById(@PathVariable Long id) throws DocumentNotFoundException {
@@ -46,14 +49,13 @@ public class DocumentRestController {
 	@GetMapping("/history/{hash}")
 	public HttpEntity<?> getHistoryOfDocumentByHash(@PathVariable String hash, Pageable page){
 		Page<Document> documents = documentService.getDocumentHistory(hash, page);
-		var resp = ResponseEntity.ok(documentAssembler.toPagedModel(documents));
-		return resp;
+		return ResponseEntity.ok(documentAssembler.toListModel(documents));
 	}
 	
 	@PostMapping("/")
-	public Document saveDocument(@RequestBody Document document) {
+	public HttpEntity<DocumentModel> saveDocument(@Valid @RequestBody Document document) {
 		log.debug("Got request POST: " + document.toString());
-		return documentService.saveDocument(document);
+		return ResponseEntity.ok(documentAssembler.toModel(documentService.saveDocument(document)));
 	}
 	
 	
