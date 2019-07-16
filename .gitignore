@@ -34,3 +34,10 @@ mvnw
 mvnw.cmd
 
 \.gitignore
+Frontend
+node_modules
+.editorconfig
+.project
+.idea
+.settings
+.vscode
