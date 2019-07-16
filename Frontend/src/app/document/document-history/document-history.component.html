@@ -1,0 +1,14 @@
+
+<div *ngIf="this.history.length > 0">
+  <p>History of changes</p>
+  <ngb-accordion>
+
+    <ngb-panel *ngFor="let doc of history" title="{{doc.name}} : {{doc.updatedAt | date : 'dd.MM.yyyy hh:mm'}}" >
+      <ng-template ngbPanelContent>
+        <app-document-history-item   (onChoice)="this.onChoice.emit($event)" [document]="doc">
+        </app-document-history-item>
+      </ng-template>
+    </ngb-panel>
+  </ngb-accordion>
+
+</div>

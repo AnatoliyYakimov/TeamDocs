@@ -1,0 +1,49 @@
+<header class="masthead">
+  <div class="container h-100">
+    <div style="padding-top: 100px"></div>
+    <div class="row">
+      <div class="col-6">
+        <nav class="row bg-light">
+          <ul class="nav">
+            <li class="nav-item"><input class="form-control w-auto" id="name" type="text"
+                                        [(ngModel)]="changedDocument.name">
+            </li>
+            <li class="nav-item bg-light d-inline-flex" *ngIf="loadedDocument.hash"><h6
+              class="font-weight-bold pt-2 pl-1">
+              Hash:</h6><a class="font-weight-light pt-2 pl-1">{{loadedDocument.hash}}</a>
+            </li>
+          </ul>
+        </nav>
+        <div class="row">
+          <ckeditor class="w-100"
+                    [(ngModel)]="this.changedDocument.text"
+                    [config]="editorConfig">
+          </ckeditor>
+        </div>
+        <div class="row bg-light">
+          <ul class="nav align-content-end">
+            <li class="nav-item">
+              <button class="btn btn-success" (click)="this.saveDocument()">Save</button>
+            </li>
+            <li class="nav-item"><input class="form-control" style="width: 150px" id="doc_hash" type="text"
+                                        [(ngModel)]="hash"></li>
+            <li class="nav-item">
+              <button class="btn btn-success" (click)="this.loadDocumentByHash()">Load</button>
+            </li>
+            <li class="nav-item">
+              <button class="btn btn-primary" (click)="this.newDocument()">New</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-2">
+        <app-active-users></app-active-users>
+      </div>
+      <div class="col-4">
+        <app-document-history (onChoice)="this.onChoise($event)"></app-document-history>
+      </div>
+    </div>
+
+  </div>
+</header>
+

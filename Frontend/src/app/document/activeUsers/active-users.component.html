@@ -1,0 +1,7 @@
+<div class="card text-center" *ngIf="users.length > 0">
+  <p class="font-weight-light lead">Currently working on this document:</p>
+  <ul class="list-group">
+    <li class="list-group-item" *ngFor="let user of users">{{user}}</li>
+  </ul>
+</div>
+
